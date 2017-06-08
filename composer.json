@@ -1,5 +1,10 @@
 {
     "require": {
-        "doctrine/migrations": "^1.5"
+        "doctrine/migrations": "^1.5",
+        "symfony/routing": "^3.3",
+        "nette/robot-loader": "^3.0"
+    },
+    "require-dev": {
+        "raczsimon/nfw": "dev-master"
     }
 }
