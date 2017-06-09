@@ -25,11 +25,11 @@ foreach ($map as $key => $config) {
 }
 
 // Starting a new app
-$test = new raczsimon\nfw\Nfw();
-$test->setRoutes($routes);
+$app = new raczsimon\nfw\Nfw();
+$app->setRoutes($routes);
 
 try {
-    $test->startSession();
+    $app->startSession();
 } catch (Exception $e) {
     $controller = new Modules\Error\Controllers\Bootstrap();
     $controller->init($e);

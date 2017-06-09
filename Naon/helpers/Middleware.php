@@ -9,6 +9,9 @@ use Naon\Helpers\Guider;
  */
 class Middleware extends Controller
 {
+    /**
+     * Configuration
+     */
     protected $config;
     
     public function __construct()
@@ -16,11 +19,20 @@ class Middleware extends Controller
         $this->config = $GLOBALS['main'];
     }
     
+    /**
+     * Render view
+     * @param string View name
+     * @return void
+     */
     protected function render($view)
     {
         require (Guider::getViewFolderPath($this->reflect->_controller)). '\\' . $view . '.phtml';
     }
     
+    /**
+     * Call regular methods for controllers
+     * @return void
+     */
     protected function callRegular()
     {
         $this->callMethod('begin');
@@ -28,11 +40,17 @@ class Middleware extends Controller
         $this->callMethod('render', $this->reflect->view);
         $this->callMethod('end');
     }
-    
-    private function callMethod($name, $suffix = '')
-    {
-        $method = $name . ucfirst($suffix);
-        if (method_exists($this, $method))
-            $this->$method();
-    }
+        /**
+         * A function for callRegular()
+         * Calls a method if exists
+         * @param string $name Method name
+         * @param string $suffix Suffix
+         * @return void
+         */
+        private function callMethod($name, $suffix = '')
+        {
+            $method = $name . ucfirst($suffix);
+            if (method_exists($this, $method))
+                $this->$method();
+        }
 }
