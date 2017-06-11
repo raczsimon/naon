@@ -1,38 +1,21 @@
 <?php
 namespace Modules\Admin\Controllers;
 
+use Nette;
+use Naon\Entity;
 use Naon\Helpers\Middleware;
-use Nette\Security\SimpleAuthenticator;
-use Nette\Security\User;
-use Naon\Helpers\MockUserStorage;
+use Naon\Helpers\Security;
 
 class General extends Middleware
 {
+    public $em;
+    
     /**
      * Sandbox for Administration
      */
     public function init()
     {
-        $user = new User(new MockUserStorage);
-        $users = [
-            'john' => 'password123!',
-            'admin' => 'admin',
-        ];
-        $counter = (object) [
-            'login' => 0,
-            'logout' => 0,
-        ];
-        $user->onLoggedIn[] = function () use ($counter) {
-            $counter->login++;
-        };
-        $user->onLoggedOut[] = function () use ($counter) {
-            $counter->logout++;
-        };
-        $authenticator = new SimpleAuthenticator($users);
-        $user->setAuthenticator($authenticator);
-
+        $user = Security::setUser();
         $user->login('admin', 'admin');
-        var_dump($user->getIdentity());
-        echo 'Administrace';
     }
 }

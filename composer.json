@@ -1,11 +1,11 @@
 {
     "require": {
-        "doctrine/migrations": "^1.5",
         "symfony/routing": "^3.3",
         "nette/robot-loader": "^3.0",
+        "symfony/http-foundation": "^3.3",
+        "doctrine/orm": "^2.5",
+        "nette/neon": "^2.4",
+        "nette/di": "^2.4",
         "nette/security": "^2.4"
-    },
-    "require-dev": {
-        "raczsimon/nfw": "dev-master"
     }
 }

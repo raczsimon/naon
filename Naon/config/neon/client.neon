@@ -1,0 +1,13 @@
+app:
+# Application mode [development/production]
+    devmode: true
+    authenticator: Naon\Helpers\Authenticator
+
+database:
+    driver: pdo_mysql
+    host: localhost
+    username: root
+    password:
+    dbname: naon
+
+    entities: database

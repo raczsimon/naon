@@ -1,2 +1,1 @@
-# Do not include vendor folder into Git repository
-/vendor/
+/vendor

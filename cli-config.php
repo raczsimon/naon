@@ -1,7 +1,7 @@
 <?php
-session_start();
+use Doctrine\ORM\Tools\Console\ConsoleRunner;
+
 require ('vendor/autoload.php');
-$routes = require('naon/config/routes.php');
 
 // Initilize a loader
 $loader = new Nette\Loaders\RobotLoader;
@@ -22,19 +22,12 @@ foreach ($map as $key => $config) {
     $GLOBALS[$key] = ($handler->get());
 }
 
-// Starting a new app
-$app = new raczsimon\nfw\Nfw();
-$app->setRoutes($routes);
-
 // Database configuration
-if (isset($GLOBALS['main']->database['driver'])) {
+if (isset($GLOBALS['main']->driver)) {
     $database = new Naon\Config\Database;
-    $GLOBALS['em'] = $database->handle();
+    $database->handle();
 }
 
-try {
-    $app->startSession();
-} catch (Exception $e) {
-    $controller = new Modules\Error\Controllers\Bootstrap();
-    $controller->init($e);
-}
+$database = new Naon\Config\Database;
+
+return ConsoleRunner::createHelperSet($database->handle());
