@@ -1,35 +1,39 @@
 <?php
 session_start();
+
 require ('vendor/autoload.php');
-$routes = require('naon/config/routes.php');
+$GLOBALS['routes'] = require('config/routes.php');
 
 // Initilize a loader
 $loader = new Nette\Loaders\RobotLoader;
-$loader->addDirectory('Modules');
-$loader->addDirectory('Themes');
-$loader->addDirectory('Naon');
+$loader->addDirectory('modules');
+$loader->addDirectory('themes');
+$loader->addDirectory('nui');
+$loader->addDirectory('config');
 
-$loader->setTempDirectory('Naon/temp');
+$loader->setTempDirectory('nui/temp');
 $loader->register();
 
 // Handling the configuration files
-$map = require('Naon/config.map.php');
+$map = require('nui/config.map.php');
 
 foreach ($map as $key => $config) {
-    $handler = new raczsimon\nfw\Config\Handler();
+    $handler = new Nui\Config\Handler();
     $handler->set($config);
     $handler->parse();
-    $GLOBALS[$key] = ($handler->get());
+    $GLOBALS['settings'][$key] = ($handler->get());
 }
 
 // Starting a new app
-$app = new raczsimon\nfw\Nfw();
-$app->setRoutes($routes);
+$app = new Nui\Application();
+$app->setRoutes($GLOBALS['routes']);
+
+$GLOBALS['language_manager'] = new Nui\Environment\LanguageManager;
 
 // Database configuration
-if (isset($GLOBALS['main']->database['driver'])) {
-    $database = new Naon\Config\Database;
-    $GLOBALS['em'] = $database->handle();
+if (isset($GLOBALS['settings']['main']->database['driver'])) {
+    $database = new Nui\Config\Database;
+    $GLOBALS['settings']['em'] = $database->handle();
 }
 
 try {
@@ -38,3 +42,5 @@ try {
     $controller = new Modules\Error\Controllers\Bootstrap();
     $controller->init($e);
 }
+
+$_SESSION['flash'] = [];

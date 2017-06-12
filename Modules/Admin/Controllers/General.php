@@ -2,9 +2,11 @@
 namespace Modules\Admin\Controllers;
 
 use Nette;
-use Naon\Entity;
-use Naon\Helpers\Middleware;
-use Naon\Helpers\Security;
+use Nui\Entity;
+use Nui\Helpers\Middleware;
+use Nui\Helpers\Security;
+
+use Modules\Admin\Components\SignForm;
 
 class General extends Middleware
 {
@@ -14,8 +16,33 @@ class General extends Middleware
      * Sandbox for Administration
      */
     public function init()
+    { 
+        if (!$this->auth->isLoggedIn()) {
+            $this->login();
+        } else {
+            $this->dashboard();
+        }
+    }
+    
+    /**
+     * Login view
+     */
+    public function login()
     {
-        $user = Security::setUser();
-        $user->login('admin', 'admin');
+        $this->changeView('login');
+        
+        $data = [
+            'signForm' => (new SignForm)->createForm()  
+        ];
+        
+        $this->render('sign/in', $data);
+    }
+    
+    /**
+     * Dashboard view
+     */
+    public function dashboard()
+    {
+        $this->changeView('dashboard');
     }
 }

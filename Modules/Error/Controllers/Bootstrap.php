@@ -1,7 +1,7 @@
 <?php
 namespace Modules\Error\Controllers;
 
-use Naon\Helpers\Middleware;
+use Nui\Helpers\Middleware;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class Bootstrap extends Middleware {
